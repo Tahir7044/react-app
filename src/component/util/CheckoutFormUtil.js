@@ -40,7 +40,7 @@ export function AddressHook(initialState) {
 	return [state, checkOuthandler, checkOutSubmithandler, stateClear];
 }
 
-export function FormShowHook(initialState) {
+export function FormShowHook(intialState) {
 	const [showForm, setShowForm] = useState(initialState);
 	const showFormHandler = () => {
 		setShowForm(!showForm);
