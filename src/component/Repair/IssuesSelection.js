@@ -17,7 +17,7 @@ function IssuesSelection() {
 			clearAllIssues();
 		};
 	}, []);
-
+	// console.log(selectedIssues);
 	return (
 		<div className="row no-gutters justify-content-start align-items-center issueSelection selectOption">
 			{issues.map(item => (

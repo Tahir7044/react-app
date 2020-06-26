@@ -57,10 +57,12 @@ const PhoneContextProvider = props => {
 					selectedBrand.brand === item.brand
 				) {
 					item.issue.map(issue => {
+						// console.log(issue.key);
 						obj[issue.key] = true;
 						min += issue.price[0];
 						max += issue.price[1];
 					});
+					// console.log(obj);
 					setIsPreSelectedIssue(true);
 					setSelectedIssues(obj);
 					setTotalPrice([min, max]);

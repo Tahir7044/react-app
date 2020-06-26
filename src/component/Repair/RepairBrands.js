@@ -14,6 +14,7 @@ function RepairBrands() {
 		selectedBrand,
 		unSelectBrandHanlder,
 		selectedMobile,
+		isPreSelectedIssue,
 		unSelectMobileHanlder,
 		unClearAll,
 	} = useContext(PhoneContext);
@@ -41,6 +42,13 @@ function RepairBrands() {
 			localStorage.setItem('myCart', JSON.stringify([summary]));
 		} else {
 			myCart = JSON.parse(myCart);
+			if (isPreSelectedIssue) {
+				myCart = myCart.filter(
+					item =>
+						item.brand !== summary.brand &&
+						item.model !== summary.model
+				);
+			}
 			myCart.push(summary);
 			localStorage.setItem('myCart', JSON.stringify(myCart));
 		}

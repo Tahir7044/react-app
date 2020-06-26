@@ -3,9 +3,9 @@ import EmptyCart from './Checkout/EmptyCart';
 import MyCartUtil from './Checkout/MyCartUtil';
 import { Link } from 'react-router-dom';
 function UserCart() {
-	let Cart = localStorage.getItem('myCart');
-	Cart = JSON.parse(Cart);
-	const [myCart, setmyCart] = useState(Cart || []);
+	const [myCart, setmyCart] = useState(
+		JSON.parse(localStorage.getItem('myCart')) || []
+	);
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
