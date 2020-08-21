@@ -1,0 +1,149 @@
+CREATE TABLE `SampleDb`.`user`
+(
+ `userID`    integer NOT NULL ,
+ `username`  varchar(45) NOT NULL ,
+ `email`     varchar(100) NOT NULL ,
+ `password`  varchar(100) NOT NULL ,
+ `gender`    varchar(10) NOT NULL ,
+ `createdAt` date NOT NULL ,
+
+PRIMARY KEY (`userID`),
+ CONSTRAINT `check_117` CHECK ( gender=="male"||gender=="female" )
+);
+
+
+
+-- ************************************** `SampleDb`.`Details`
+
+CREATE TABLE `SampleDb`.`Details`
+(
+ `detailID`   integer NOT NULL ,
+ `firstName`  varchar(45) NOT NULL ,
+ `lastName`   varchar(45) NOT NULL ,
+ `address`    varchar(100) NOT NULL ,
+ `pincode`    integer NOT NULL ,
+ `city`       varchar(45) NOT NULL ,
+ `state`      varchar(45) NOT NULL ,
+ `phoneNumer` integer NOT NULL ,
+ `email`      varchar(100) NOT NULL ,
+ `userID`     integer NOT NULL ,
+
+PRIMARY KEY (`detailID`),
+KEY `fkIdx_139` (`userID`),
+CONSTRAINT `FK_139` FOREIGN KEY `fkIdx_139` (`userID`) REFERENCES `SampleDb`.`user` (`userID`)
+);
+
+
+
+
+-- ************************************** `Issue`
+
+CREATE TABLE `Issue`
+(
+ `issueID`      integer NOT NULL ,
+ `issueName`    varchar(100) NOT NULL ,
+ `minimumPrice` integer NOT NULL ,
+ `maximumPrice` integer NOT NULL ,
+ `description`  varchar(100) NOT NULL ,
+
+PRIMARY KEY (`issueID`)
+);
+
+
+-- ************************************** `SampleDb`.`Product`
+
+CREATE TABLE `SampleDb`.`Product`
+(
+ `productID`   integer NOT NULL ,
+ `mobileModel` varchar(100) NOT NULL ,
+ `brand`       varchar(45) NOT NULL ,
+
+PRIMARY KEY (`productID`)
+);
+
+-- ************************************** `MyCart`
+
+CREATE TABLE `MyCart`
+(
+ `cartID`    integer NOT NULL ,
+ `productID` integer NOT NULL ,
+ `issueID`   integer NOT NULL ,
+ `userID`    integer NOT NULL ,
+ `isActive`  binary NOT NULL ,
+
+PRIMARY KEY (`cartID`),
+KEY `fkIdx_152` (`productID`),
+CONSTRAINT `FK_152` FOREIGN KEY `fkIdx_152` (`productID`) REFERENCES `SampleDb`.`Product` (`productID`),
+KEY `fkIdx_155` (`issueID`),
+CONSTRAINT `FK_155` FOREIGN KEY `fkIdx_155` (`issueID`) REFERENCES `Issue` (`issueID`),
+KEY `fkIdx_191` (`userID`),
+CONSTRAINT `FK_191` FOREIGN KEY `fkIdx_191` (`userID`) REFERENCES `SampleDb`.`user` (`userID`)
+);
+
+
+-- ************************************** `BookNow`
+
+CREATE TABLE `BookNow`
+(
+ `bookNowID`       integer NOT NULL ,
+ `tax`             integer NOT NULL DEFAULT 0,
+ `pickupPrice`     integer NOT NULL DEFAULT 0 ,
+ `deliveryPrice`   integer NOT NULL DEFAULT 0 ,
+ `pickupAddress`   integer NOT NULL ,
+ `deliveryAddress` integer NOT NULL ,
+ `userID`          integer NOT NULL ,
+
+PRIMARY KEY (`bookNowID`),
+KEY `fkIdx_194` (`userID`),
+CONSTRAINT `FK_194` FOREIGN KEY `fkIdx_194` (`userID`) REFERENCES `SampleDb`.`user` (`userID`)
+);
+
+
+-- ************************************** `Appointment`
+
+CREATE TABLE `Appointment`
+(
+ `AppintmentID` integer NOT NULL ,
+ `status`       varchar(45) NOT NULL ,
+ `userID`       integer NOT NULL ,
+ `bookNowID`    integer NOT NULL ,
+ `date`         date NOT NULL ,
+
+PRIMARY KEY (`AppintmentID`),
+KEY `fkIdx_210` (`userID`),
+CONSTRAINT `FK_210` FOREIGN KEY `fkIdx_210` (`userID`) REFERENCES `SampleDb`.`user` (`userID`),
+KEY `fkIdx_213` (`bookNowID`),
+CONSTRAINT `FK_213` FOREIGN KEY `fkIdx_213` (`bookNowID`) REFERENCES `BookNow` (`bookNowID`)
+);
+
+
+-- ************************************** `Ordered`
+
+CREATE TABLE `Ordered`
+(
+ `orderedID`    integer NOT NULL ,
+ `AppintmentID` integer NOT NULL ,
+ `cartID`       integer NOT NULL ,
+
+PRIMARY KEY (`orderedID`),
+KEY `fkIdx_242` (`AppintmentID`),
+CONSTRAINT `FK_242` FOREIGN KEY `fkIdx_242` (`AppintmentID`) REFERENCES `Appointment` (`AppintmentID`),
+KEY `fkIdx_245` (`cartID`),
+CONSTRAINT `FK_245` FOREIGN KEY `fkIdx_245` (`cartID`) REFERENCES `MyCart` (`cartID`)
+);
+
+
+-- ************************************** `payment`
+
+CREATE TABLE `payment`
+(
+ `PaymentID`   integer NOT NULL ,
+ `totalAmount` integer NOT NULL ,
+ `discount`    integer NOT NULL ,
+ `userID`      integer NOT NULL ,
+
+PRIMARY KEY (`PaymentID`),
+KEY `fkIdx_236` (`userID`),
+CONSTRAINT `FK_236` FOREIGN KEY `fkIdx_236` (`userID`) REFERENCES `SampleDb`.`user` (`userID`)
+);
+

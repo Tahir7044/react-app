@@ -17,40 +17,41 @@ function IssuesSelection() {
 			clearAllIssues();
 		};
 	}, []);
-	// console.log(selectedIssues);
 	return (
 		<div className="row no-gutters justify-content-start align-items-center issueSelection selectOption">
 			{issues.map(item => (
-				<div className="col-12 col-md-6 col-lg-4" key={item.key}>
+				<div className="col-12 col-md-6 col-lg-4" key={item.issueID}>
 					<div className="branWrap ">
 						<div className="iconWrap">
 							<img
-								src="/assets/images/icons/broken-phone.png"
+								src={`/assets/images/icons/${item.image}`}
 								alt=""
 							/>
 						</div>
 						<div className="contentWrap">
-							<h4>{item.issue}</h4>
-							<p>{item.discription}</p>
+							<h4>{item.issueName}</h4>
+							<p>{item.description}</p>
 							<p className="price">
-								Rs {item.minPrice} - Rs {item.maxPrice}
+								Rs {item.minimumPrice} - Rs {item.maximumPrice}
 							</p>
 						</div>
 						<a
 							href="javascript:void(0)"
-							className={selectedIssues[item.key] ? 'remove' : ''}
+							className={
+								selectedIssues[item.issueID] ? 'remove' : ''
+							}
 							onClick={() => {
-								if (selectedIssues[item.key])
+								if (selectedIssues[item.issueID])
 									unSelectIssuesHanlder(
-										item.key,
-										item.minPrice,
-										item.maxPrice
+										item.issueID,
+										item.minimumPrice,
+										item.maximumPrice
 									);
 								else {
 									selectIssuesHanlder(
-										item.key,
-										item.minPrice,
-										item.maxPrice
+										item.issueID,
+										item.minimumPrice,
+										item.maximumPrice
 									);
 								}
 							}}
@@ -58,7 +59,7 @@ function IssuesSelection() {
 							<span className="">+ Add</span>
 							<span
 								className={
-									selectedIssues[item.key] ? '' : 'd-none'
+									selectedIssues[item.issueID] ? '' : 'd-none'
 								}
 							>
 								<svg

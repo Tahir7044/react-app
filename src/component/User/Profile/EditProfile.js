@@ -143,7 +143,7 @@ function EditProfile() {
 											<input
 												type="text"
 												className="editProfileDetails"
-												value=""
+												defaultValue=""
 												pattern="[0-9]{1}[0-9]{9}"
 												maxLength="4"
 											/>

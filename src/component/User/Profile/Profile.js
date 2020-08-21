@@ -63,7 +63,7 @@ function Profile() {
 										</div>
 										<div className="col-7 col-lg-8">
 											<input
-												type="number"
+												type="text"
 												className="plainText"
 												readOnly
 												value={phoneNumber}

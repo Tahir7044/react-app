@@ -1,8 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PhoneContext } from '../../Contexts/PhoneContext/PhoneContext';
 function MobleSelection() {
-	const { mobiles, selectMobileHanlder } = useContext(PhoneContext);
+	const { getMobiles, selectMobileHanlder } = useContext(PhoneContext);
+	const [mobiles, setmobiles] = useState([]);
 	useEffect(() => {
+		setmobiles(getMobiles());
 		window.scrollTo(0, 500);
 	}, []);
 	return (
@@ -10,21 +12,21 @@ function MobleSelection() {
 			{mobiles.map(item => (
 				<div
 					className="col-6 col-md-4 col-lg-2"
-					key={item.key}
+					key={item.productID}
 					onClick={() => {
-						selectMobileHanlder(item.mobileName);
+						selectMobileHanlder(item.mobileModel, item.productID);
 					}}
 				>
 					<div className="branWrap">
 						<div className="imgWrapBrand">
 							<img
-								src={`/assets/images/mobiles/oneplus/${item.img}`}
+								src={item.image}
 								className="d-block text-center mx-auto"
 								alt=""
 							/>
 						</div>
 						<h3 className="text-center uppercase">
-							{item.mobileName}
+							{item.mobileModel}
 						</h3>
 					</div>
 				</div>

@@ -33,7 +33,7 @@ function User({ Active }) {
 					<p>Add, Edit Addresses</p>
 				</Link>
 				<Link
-					to="/appointments"
+					to="/appointments/all"
 					className={
 						choose === 'appointments'
 							? 'sideBarBlock active'

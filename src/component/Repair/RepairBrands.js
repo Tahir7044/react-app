@@ -23,11 +23,11 @@ function RepairBrands() {
 		let myCart = localStorage.getItem('myCart');
 		let issue = [];
 		issues.forEach(item => {
-			if (selectedIssues[item.key]) {
+			if (selectedIssues[item.issueID]) {
 				issue.push({
-					key: item.key,
-					issue: item.issue,
-					price: [item.minPrice, item.maxPrice],
+					key: item.issueID,
+					issue: item.issueName,
+					price: [item.minimumPrice, item.maximumPrice],
 				});
 			}
 		});

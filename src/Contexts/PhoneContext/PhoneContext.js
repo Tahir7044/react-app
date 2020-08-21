@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { brandsData, mobileData, issueData } from '../../data/RepairData';
+import { brandsData } from '../../data/RepairData';
+import axios from 'axios';
 export const PhoneContext = createContext();
 const PhoneContextProvider = props => {
 	const [brands, setBrands] = useState([]);
@@ -8,39 +9,69 @@ const PhoneContextProvider = props => {
 	const [isPreSelectedIssue, setIsPreSelectedIssue] = useState(false);
 	const [selectedBrand, setSelectedBrand] = useState({
 		brand: '',
+		brandID: '',
 		active: false,
 	});
 	const [selectedMobile, setSelectedMobile] = useState({
 		mobile: '',
+		mobileID: '',
 		active: false,
 	});
 	const [selectedIssues, setSelectedIssues] = useState({});
 	const [totalPrice, setTotalPrice] = useState([0, 0]);
+
+	useEffect(() => {
+		async function callAPI() {
+			try {
+				let issue = await axios.get(`http://localhost:3002/api/issues`);
+				setIssues(issue.data.data);
+				let phones = await axios.get(
+					'http://localhost:3002/api/phones'
+				);
+				setMobiles(phones.data.data);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+		callAPI();
+		return () => {
+			setIssues([]);
+			setMobiles([]);
+		};
+	}, []);
 	// Brand handler
 	useEffect(() => {
 		setBrands(brandsData);
-		setMobiles(mobileData);
-		setIssues(issueData);
 		return () => {
 			setBrands([]);
-			setMobiles([]);
-			setIssues([]);
 		};
-	}, [brandsData, mobileData, issueData]);
-	const selectBrandHanlder = brand => {
-		setSelectedBrand({ brand: brand, active: true });
+	}, []);
+
+	// brand selection
+	const selectBrandHanlder = (brand, id) => {
+		setSelectedBrand({ brand: brand, brandID: id, active: true });
 	};
 	const unSelectBrandHanlder = () => {
-		setSelectedBrand({ brand: '', active: false });
+		setSelectedBrand({ brand: '', brandID: '', active: false });
 		unSelectMobileHanlder();
 	};
 
 	// Mobile handler
-	const selectMobileHanlder = mobile => {
-		setSelectedMobile({ mobile: mobile, active: true });
+	const selectMobileHanlder = (mobile, id) => {
+		setSelectedMobile({ mobile: mobile, mobileID: id, active: true });
 	};
 	const unSelectMobileHanlder = () => {
-		setSelectedMobile({ mobile: '', active: false });
+		setSelectedMobile({ mobile: '', mobileID: '', active: false });
+	};
+
+	const getMobiles = () => {
+		const data = mobiles.filter(
+			item => item.brandID == selectedBrand.brandID
+		);
+		if (data.length == 0) {
+			console.log('i will fetch data from server');
+		}
+		return data;
 	};
 
 	// Issues handler
@@ -57,12 +88,10 @@ const PhoneContextProvider = props => {
 					selectedBrand.brand === item.brand
 				) {
 					item.issue.map(issue => {
-						// console.log(issue.key);
 						obj[issue.key] = true;
 						min += issue.price[0];
 						max += issue.price[1];
 					});
-					// console.log(obj);
 					setIsPreSelectedIssue(true);
 					setSelectedIssues(obj);
 					setTotalPrice([min, max]);
@@ -116,6 +145,7 @@ const PhoneContextProvider = props => {
 				selectedBrand,
 				selectedMobile,
 				selectedIssues,
+				getMobiles,
 			}}
 		>
 			{props.children}
